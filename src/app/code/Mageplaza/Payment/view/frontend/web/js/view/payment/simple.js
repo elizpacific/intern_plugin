@@ -1,11 +1,9 @@
 define(
     [
-        'jquery',
         'uiComponent',
         'Magento_Checkout/js/model/payment/renderer-list'
     ],
-    function ($,
-              Component,
+    function (Component,
               rendererList) {
         'use strict';
         rendererList.push(

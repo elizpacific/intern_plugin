@@ -13,7 +13,7 @@
                 <enable>1</enable>
                 <api_key>ApiKey</api_key>
                 <enable>1</enable>
-                <curl>C</curl>
+                <curl>Curl</curl>
             </simple>
         </payment>
     </default>
