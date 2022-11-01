@@ -7,13 +7,7 @@
         <label data-bind="attr: {'for': getCode()}" class="label"><span data-bind="text: getTitle()"></span></label>
     </div>
     <div class="payment-method-content">
-<!--        <div class="component-wrapper">-->
-<!--            <form class="form" data-bind="attr: {'id': getCode() + '-form'}">-->
-<!--                <div class="field-select-billing">-->
-<!--                    <select data-bind="options: getIssuers(), optionsText: 'name', optionsValue: 'id', value: selectedIssuer" data-validate="{required:true, 'validate-bank':true}"></select>-->
-<!--                </div>-->
-<!--            </form>-->
-<!--        </div>-->
+
         <div class="payment-method-billing-address">
             <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
             <!-- ko template: getTemplate() --><!-- /ko -->

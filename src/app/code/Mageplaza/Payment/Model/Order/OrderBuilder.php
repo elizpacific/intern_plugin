@@ -2,8 +2,13 @@
 
 namespace Mageplaza\Payment\Model\Order;
 
+use Mageplaza\Payment\Controller\Index\Config;
+use Mageplaza\Payment\Client\Client;
+use Ginger\Ginger;
+
 class OrderBuilder
 {
+    protected $config;
     /**
      * @var \Magento\Framework\View\Result\PageFactory
      */
@@ -18,10 +23,12 @@ class OrderBuilder
      */
     public function __construct(
         \Magento\Framework\View\Result\PageFactory $resultPageFactory,
-        \Magento\Sales\Api\OrderRepositoryInterface $orderRepository
+        \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
+        Config $config,
     ) {
         $this->resultPageFactory = $resultPageFactory;
         $this->orderRepository = $orderRepository;
+        $this->config = $config;
     }
 
     /**
@@ -35,6 +42,24 @@ class OrderBuilder
         return $lastOrderId;
     }
 
+    public function getOrderByID($client)
+    {
+        $order = $client->getOrder('84d92794-f211-48f2-8537-2eb5b1cf12dc');
+        return $order;
+    }
+
+    public function getRedirectToInterim()
+    {
+        $this->config->getInterim();
+    }
+
+    public function getCustomBaseUrl()
+    {
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+        return $storeManager->getStore()->getBaseUrl();
+    }
+
     /**
      * @return array
      */
@@ -45,17 +70,14 @@ class OrderBuilder
         $customOrder = [
           'merchant_order_id' => $order->getIncrementId(),
           'currency' => $order->getBaseCurrencyCode(),
-          'amount' => intval($order->getGrandTotal()),
+          'amount' => intval($order->getGrandTotal()) * 100,
           'description' => "Order №". $this->getOrderId(),
-          'payment_method' => "iDeal",
-//          'return_url' => $this->getURL()
+          'return_url' => $this->getCustomBaseUrl() . 'mageplaza/index/interim',
+          'transactions' => [
+              array('payment_method' => 'credit-card'),
+          ]
         ];
 
         return $customOrder;
     }
-
-//    public function getURL()
-//    {
-//        return $this->getURL('https://magento.test/checkout/onepage/success/');
-//    }
 }

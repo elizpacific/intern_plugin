@@ -8,19 +8,20 @@ use Mageplaza\Payment\Controller\Index\Config;
 class Client
 {
     /**
+     * @param Config $config
      * @return \Ginger\ApiClient
      */
-    public function createClient(Config $config): \Ginger\ApiClient
+    public function createClient(Config $config)
     {
-        $client = Ginger::createClient(
+        $apiClient = Ginger::createClient(
             'https://api.online.emspay.eu',
-            $config->helperData->getGeneralConfig('api_key')
-//            [
-//                CURLOPT_CAINFO => __DIR__ . '../caCERT/cacert.pem.txt'
-//            ]
+            $config->helperData->getGeneralConfig('api_key'),
+            [
+                CURLOPT_CAINFO => __DIR__ . '/../caCERT/cacert.pem'
+            ]
         );
 
-        return $client;
+        return $apiClient;
     }
 
 }
